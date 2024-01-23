@@ -1,0 +1,44 @@
+syntax = "v1"
+
+info (
+	title:  "user api"
+	desc:   "user server"
+	author: "xxcheng"
+	email:  "developer@xxcheng.cn"
+)
+
+type RegisterReq {
+	Username string
+	Password string
+}
+
+type RegisteraResp {
+	Ok bool
+	Id string
+}
+
+type InfoReq {}
+
+type InfoResp {
+	Id       string
+	Username string
+	Balance  float64
+}
+
+@server (
+	prefix: /user
+)
+service user-api {
+	@handler Register
+	post /register (RegisterReq) returns (RegisteraResp)
+}
+
+@server (
+	prefix: /user
+	jwt:    UserToken
+)
+service user-api {
+	@handler Info
+	post /info (InfoReq) returns (InfoResp)
+}
+
