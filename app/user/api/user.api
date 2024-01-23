@@ -8,21 +8,21 @@ info (
 )
 
 type RegisterReq {
-	Username string
-	Password string
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
 type RegisteraResp {
-	Ok bool
-	Id string
+	Ok bool   `json:"ok"`
+	Id string `json:"id"`
 }
 
 type InfoReq {}
 
 type InfoResp {
-	Id       string
-	Username string
-	Balance  float64
+	Id       string  `json:"id"`
+	Username string  `json:"username"`
+	Balance  float64 `json:"balance"`
 }
 
 @server (
@@ -41,4 +41,3 @@ service user-api {
 	@handler Info
 	post /info (InfoReq) returns (InfoResp)
 }
-

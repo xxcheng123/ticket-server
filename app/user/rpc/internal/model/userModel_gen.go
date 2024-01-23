@@ -7,6 +7,7 @@ import (
 	"database/sql"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/zeromicro/go-zero/core/stores/builder"
 	"github.com/zeromicro/go-zero/core/stores/cache"
@@ -40,10 +41,11 @@ type (
 	}
 
 	User struct {
-		Id       int64   `db:"id"`
-		Username string  `db:"username"` // 用户名
-		Password string  `db:"password"` // 密码
-		Balance  float64 `db:"balance"`  // 余额
+		Id             int64     `db:"id"`
+		Username       string    `db:"username"`         // 用户名
+		Password       string    `db:"password"`         // 密码
+		Balance        float64   `db:"balance"`          // 余额
+		LastChangeTime time.Time `db:"last_change_time"` // 最后修改密码时间
 	}
 )
 
@@ -117,8 +119,8 @@ func (m *defaultUserModel) Insert(ctx context.Context, data *User) (sql.Result, 
 	userIdKey := fmt.Sprintf("%s%v", cacheUserIdPrefix, data.Id)
 	userUsernameKey := fmt.Sprintf("%s%v", cacheUserUsernamePrefix, data.Username)
 	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
-		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?)", m.table, userRowsExpectAutoSet)
-		return conn.ExecCtx(ctx, query, data.Username, data.Password, data.Balance)
+		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?)", m.table, userRowsExpectAutoSet)
+		return conn.ExecCtx(ctx, query, data.Username, data.Password, data.Balance, data.LastChangeTime)
 	}, userIdKey, userUsernameKey)
 	return ret, err
 }
@@ -133,7 +135,7 @@ func (m *defaultUserModel) Update(ctx context.Context, newData *User) error {
 	userUsernameKey := fmt.Sprintf("%s%v", cacheUserUsernamePrefix, data.Username)
 	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, userRowsWithPlaceHolder)
-		return conn.ExecCtx(ctx, query, newData.Username, newData.Password, newData.Balance, newData.Id)
+		return conn.ExecCtx(ctx, query, newData.Username, newData.Password, newData.Balance, newData.LastChangeTime, newData.Id)
 	}, userIdKey, userUsernameKey)
 	return err
 }

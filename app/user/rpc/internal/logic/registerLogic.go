@@ -2,9 +2,9 @@ package logic
 
 import (
 	"context"
-	"errors"
-	"fmt"
+	"strconv"
 	"ticket-server/app/user/rpc/internal/model"
+	"ticket-server/common/errs"
 
 	"ticket-server/app/user/rpc/internal/svc"
 	"ticket-server/app/user/rpc/pb"
@@ -34,14 +34,16 @@ func (l *RegisterLogic) Register(in *pb.RegisterReq) (*pb.RegisterResp, error) {
 		Password: password,
 	})
 	if err != nil {
-		fmt.Printf("%+v\n", err)
-		return nil, errors.New("注册失败")
+		logx.Errorf("%+v", err)
+		return nil, errs.MySQLRegisterError
 	}
-	if c, _ := result.RowsAffected(); c != 1 {
-		return nil, errors.New("注册失败")
+	var id int64
+	if id, err = result.LastInsertId(); err != nil {
+		logx.Errorf("%+v", err)
+		return nil, errs.MySQLRegisterError
 	}
 	return &pb.RegisterResp{
 		Ok: true,
-		Id: "注册成功",
+		Id: strconv.FormatInt(id, 10),
 	}, nil
 }

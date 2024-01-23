@@ -1,8 +1,9 @@
 module ticket-server
 
-go 1.21.3
+go 1.20
 
 require (
+	github.com/pkg/errors v0.9.1
 	github.com/zeromicro/go-zero v1.6.1
 	google.golang.org/grpc v1.60.0
 	google.golang.org/protobuf v1.31.1-0.20231027082548-f4a6c1f6e5c1

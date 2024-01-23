@@ -1,6 +1,17 @@
 Name: user.rpc
-ListenOn: 0.0.0.0:8080
-Etcd:
-  Hosts:
-  - 127.0.0.1:2379
-  Key: user.rpc
+ListenOn: 0.0.0.0:1002
+DBConf:
+  User: ticket
+  Password: "12345678"
+  Host: xx.xxcheng.cn
+  Port: 13306
+  DBName: ticket
+CacheConf:
+  - Host: xx.xxcheng.cn:6379
+Log:
+  Encoding: plain
+
+#Etcd:
+#  Hosts:
+#  - 127.0.0.1:2379
+#  Key: user.rpc

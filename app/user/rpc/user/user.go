@@ -13,11 +13,20 @@ import (
 )
 
 type (
-	RegisterReq  = pb.RegisterReq
-	RegisterResp = pb.RegisterResp
+	ChangePasswordReq  = pb.ChangePasswordReq
+	ChangePasswordResp = pb.ChangePasswordResp
+	InfoReq            = pb.InfoReq
+	InfoResp           = pb.InfoResp
+	LoginReq           = pb.LoginReq
+	LoginResp          = pb.LoginResp
+	RegisterReq        = pb.RegisterReq
+	RegisterResp       = pb.RegisterResp
 
 	User interface {
 		Register(ctx context.Context, in *RegisterReq, opts ...grpc.CallOption) (*RegisterResp, error)
+		Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginResp, error)
+		ChangePassword(ctx context.Context, in *ChangePasswordReq, opts ...grpc.CallOption) (*ChangePasswordResp, error)
+		Info(ctx context.Context, in *InfoReq, opts ...grpc.CallOption) (*InfoResp, error)
 	}
 
 	defaultUser struct {
@@ -34,4 +43,19 @@ func NewUser(cli zrpc.Client) User {
 func (m *defaultUser) Register(ctx context.Context, in *RegisterReq, opts ...grpc.CallOption) (*RegisterResp, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.Register(ctx, in, opts...)
+}
+
+func (m *defaultUser) Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginResp, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.Login(ctx, in, opts...)
+}
+
+func (m *defaultUser) ChangePassword(ctx context.Context, in *ChangePasswordReq, opts ...grpc.CallOption) (*ChangePasswordResp, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.ChangePassword(ctx, in, opts...)
+}
+
+func (m *defaultUser) Info(ctx context.Context, in *InfoReq, opts ...grpc.CallOption) (*InfoResp, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.Info(ctx, in, opts...)
 }

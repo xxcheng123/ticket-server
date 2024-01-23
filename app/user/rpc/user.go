@@ -1,8 +1,12 @@
 package main
 
 import (
+	"context"
+	"errors"
 	"flag"
 	"fmt"
+	"google.golang.org/grpc/status"
+	"ticket-server/common/errs"
 
 	"ticket-server/app/user/rpc/internal/config"
 	"ticket-server/app/user/rpc/internal/server"
@@ -31,6 +35,15 @@ func main() {
 		if c.Mode == service.DevMode || c.Mode == service.TestMode {
 			reflection.Register(grpcServer)
 		}
+	})
+
+	s.AddUnaryInterceptors(func(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp any, err error) {
+		resp, err = handler(ctx, req)
+		var cc errs.Code
+		if errors.As(err, &cc) {
+			err = status.Errorf(cc.Code(), err.Error())
+		}
+		return
 	})
 	defer s.Stop()
 
