@@ -12,16 +12,16 @@ import (
 	"ticket-server/app/user/api/internal/types"
 )
 
-func RegisterHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func LoginHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.RegisterReq
+		var req types.LoginReq
 		if err := httpx.Parse(r, &req); err != nil {
 			httpc.Response(r.Context(), w, errs.ParamParseFailed.Code(), errs.ParamParseFailed.Error(), nil)
 			return
 		}
 
-		l := logic.NewRegisterLogic(r.Context(), svcCtx)
-		resp, err := l.Register(&req)
+		l := logic.NewLoginLogic(r.Context(), svcCtx)
+		resp, err := l.Login(&req)
 		if err != nil {
 			if s, ok := status.FromError(err); ok {
 				httpc.Response(r.Context(), w, s.Code(), s.Message(), nil)

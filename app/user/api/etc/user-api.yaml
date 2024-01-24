@@ -7,3 +7,5 @@ UserRpcConf:
 UserToken:
   AccessSecret: okhttp123
   AccessExpire: 644800
+Log:
+  Encoding: plain

@@ -13,7 +13,8 @@ import (
 type Code uint32
 
 const (
-	NotFound Code = 404
+	NotFound         Code = 404
+	ParamParseFailed Code = 9998
 
 	Finally Code = 9999
 )
@@ -30,8 +31,9 @@ const (
 )
 
 var code2Message = map[Code]string{
-	NotFound: "未找到",
-	Finally:  "内部错误",
+	NotFound:         "未找到",
+	Finally:          "内部错误",
+	ParamParseFailed: "参数解析失败",
 
 	MySQLInternalError: "数据库错误",
 	MySQLRegisterError: "注册失败",

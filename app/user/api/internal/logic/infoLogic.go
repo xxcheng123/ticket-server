@@ -2,6 +2,8 @@ package logic
 
 import (
 	"context"
+	"encoding/json"
+	"ticket-server/app/user/rpc/pb"
 
 	"ticket-server/app/user/api/internal/svc"
 	"ticket-server/app/user/api/internal/types"
@@ -24,7 +26,20 @@ func NewInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *InfoLogic {
 }
 
 func (l *InfoLogic) Info(req *types.InfoReq) (resp *types.InfoResp, err error) {
-	// todo: add your logic here and delete this line
+	id := l.ctx.Value("uid").(string)
+	loginTime, _ := l.ctx.Value("loginTime").(json.Number).Int64()
 
-	return
+	result, err := l.svcCtx.UserRpc.Info(l.ctx, &pb.InfoReq{
+		Id:        id,
+		LoginTime: loginTime,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &types.InfoResp{
+		Id:       id,
+		Username: result.Username,
+		Balance:  result.Balance,
+	}, nil
 }
