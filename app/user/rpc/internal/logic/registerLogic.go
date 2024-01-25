@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"ticket-server/app/user/rpc/internal/model"
 	"ticket-server/common/errs"
+	"time"
 
 	"ticket-server/app/user/rpc/internal/svc"
 	"ticket-server/app/user/rpc/pb"
@@ -30,8 +31,9 @@ func (l *RegisterLogic) Register(in *pb.RegisterReq) (*pb.RegisterResp, error) {
 	username := in.Username
 	password := in.Password
 	result, err := l.svcCtx.UserModel.Insert(l.ctx, &model.User{
-		Username: username,
-		Password: password,
+		Username:       username,
+		Password:       password,
+		LastChangeTime: time.Now(),
 	})
 	if err != nil {
 		logx.Errorf("%+v", err)
