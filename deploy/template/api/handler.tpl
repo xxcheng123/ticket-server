@@ -3,6 +3,7 @@ package {{.PkgName}}
 import (
 	"google.golang.org/grpc/status"
     "net/http"
+    "ticket-server/common/errs"
     "ticket-server/common/httpc"
 
 	"github.com/zeromicro/go-zero/rest/httpx"

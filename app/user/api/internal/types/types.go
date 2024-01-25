@@ -30,3 +30,12 @@ type LoginResp struct {
 	Token      string `json:"token"`
 	ExpireTime int64  `json:"expireTime"`
 }
+
+type ChangePasswordReq struct {
+	Password string `json:"password"`
+}
+
+type ChangePasswordResp struct {
+	Ok bool   `json:"ok"`
+	Id string `json:"id"`
+}

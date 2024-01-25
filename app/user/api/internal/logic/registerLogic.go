@@ -43,7 +43,6 @@ func (l *RegisterLogic) Register(req *types.RegisterReq) (resp *types.RegisteraR
 		Password: password,
 	})
 	if err != nil {
-
 		if rpcErr, ok := status.FromError(err); ok {
 			fmt.Println(rpcErr.Message(), rpcErr.Code())
 		}

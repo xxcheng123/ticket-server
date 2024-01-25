@@ -33,6 +33,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/info",
 				Handler: InfoHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/change_password",
+				Handler: ChangePasswordHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.UserToken.AccessSecret),
 		rest.WithPrefix("/user"),

@@ -35,6 +35,13 @@ type LoginResp {
 	Token      string `json:"token"`
 	ExpireTime int64  `json:"expireTime"`
 }
+type ChangePasswordReq {
+	Password string `json:"password"`
+}
+type ChangePasswordResp {
+	Ok bool   `json:"ok"`
+	Id string `json:"id"`
+}
 
 @server (
 	prefix: /user
@@ -53,4 +60,6 @@ service user-api {
 service user-api {
 	@handler Info
 	get /info (InfoReq) returns (InfoResp)
+	@handler ChangePassword
+	post /change_password(ChangePasswordReq)returns(ChangePasswordResp)
 }
