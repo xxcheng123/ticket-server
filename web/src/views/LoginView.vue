@@ -9,7 +9,7 @@
           <Login/>
         </el-tab-pane>
         <el-tab-pane label="注册" name="register">
-          <Register/>
+          <Register @switchTab="switchTab"/>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -21,6 +21,13 @@ import Login from '@/components/Login.vue'
 import Register from "@/components/Register.vue";
 
 const activeTab = ref('login')
+const switchTab=(type)=>{
+  if (type==='register'){
+    activeTab.value='register'
+  }else{
+    activeTab.value='login';
+  }
+}
 </script>
 <style scoped>
 .wrapper{

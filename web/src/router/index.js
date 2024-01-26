@@ -5,9 +5,12 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
+      path: '/home',
       name: 'home',
-      component: HomeView
+      component: HomeView,
+      meta:{
+        needLogin:true
+      }
     },
     {
       path: '/about',
@@ -20,9 +23,14 @@ const router = createRouter({
     {
       path:'/login',
       name:'login',
-      component:()=>import('@/views/Login.vue')
+      component:()=>import('@/views/LoginView.vue')
     }
   ]
 })
-
+router.beforeEach((to,from)=>{
+  if (to.meta.needLogin && !sessionStorage.getItem('token')){
+      return '/login'
+  }
+  return true
+})
 export default router

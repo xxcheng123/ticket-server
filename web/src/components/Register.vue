@@ -8,16 +8,17 @@
         <el-input v-model="formInfo.username" style="width: 320px;"/>
       </el-form-item>
       <el-form-item label="密码">
-        <el-input v-model="formInfo.password"  style="width: 320px;"/>
+        <el-input v-model="formInfo.password" type="password"  style="width: 320px;"/>
       </el-form-item>
       <el-button type="primary" @click="handleLoginBtn" :loading="loginBtnInfo.loading" :disabled="loginBtnInfo.disabled">注册</el-button>
     </el-form>
   </div>
 </template>
 <script setup>
-import { reactive } from 'vue'
+import { reactive,defineEmits } from 'vue'
 import axios from 'axios';
 import {ElMessage} from "element-plus";
+const emit=defineEmits(['switchTab'])
 const formInfo = reactive({
   username: '',
   password: '',
@@ -37,6 +38,7 @@ const handleLoginBtn=()=>{
     if(response.data.code!==200){
       ElMessage.error(response.data.msg);
     }else{
+      emit('switchTab','login');
       ElMessage.success("注册成功！")
     }
   }).finally(e=>{
